@@ -91,21 +91,18 @@ async function main() {
 
   for (const [i, brief] of pool.entries()) {
     try {
-      for (const [i, brief] of pool.entries()) {
-    try {
       if (existsSync(`data/comments/${brief.id}.json`)) {
-        const a = await api(`/animes/${brief.id}`);
-        out.push({ id: a.id, r: a.russian, n: a.name,
-          y: a.aired_on ? Number(a.aired_on.slice(0, 4)) : null,
-          k: a.kind, e: a.episodes || a.episodes_aired || null,
-          g: (a.genres || []).map((g) => g.russian).filter(Boolean).slice(0, 4),
-          s: (a.studios || [])[0]?.name || null, sc: a.score,
-          img: a.image?.original ? `https://shikimori.one${a.image.original}` : null,
-          url: a.url ? `https://shikimori.one${a.url}` : null });
-        console.log(`= [${i + 1}/${pool.length}] ${a.russian} (уже собрано)`);
+        const cached = await api(`/animes/${brief.id}`);
+        out.push({ id: cached.id, r: cached.russian, n: cached.name,
+          y: cached.aired_on ? Number(cached.aired_on.slice(0, 4)) : null,
+          k: cached.kind, e: cached.episodes || cached.episodes_aired || null,
+          g: (cached.genres || []).map((g) => g.russian).filter(Boolean).slice(0, 4),
+          s: (cached.studios || [])[0]?.name || null, sc: cached.score,
+          img: cached.image?.original ? `https://shikimori.one${cached.image.original}` : null,
+          url: cached.url ? `https://shikimori.one${cached.url}` : null });
+        console.log(`= [${i + 1}/${pool.length}] ${cached.russian} (уже собрано)`);
         continue;
       }
-      const a = await api(`/animes/${brief.id}`);
       const a = await api(`/animes/${brief.id}`);
       const topics = await api(`/animes/${a.id}/topics?limit=10`);
       const topic = (Array.isArray(topics) ? topics : []).find(
