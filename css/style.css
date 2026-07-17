@@ -1,0 +1,223 @@
+/* Анидл — ночной индиго + сакура */
+:root {
+  --bg: #131022;
+  --bg-glow: #1b1533;
+  --surface: #1d1833;
+  --surface-2: #262047;
+  --line: #322a58;
+  --text: #efeafb;
+  --muted: #9c93bd;
+  --sakura: #ff7ea8;
+  --sakura-dim: #b3547a;
+  --ok: #6fe3b0;
+  --bad: #ff6b6b;
+  --gold: #ffc66b;
+  --radius: 14px;
+  font-size: 16px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: "Manrope", system-ui, sans-serif;
+  background:
+    radial-gradient(60rem 30rem at 85% -10%, #2a1740 0%, transparent 60%),
+    radial-gradient(40rem 26rem at -10% 20%, #16224a33 0%, transparent 60%),
+    var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.2rem 1rem 3rem;
+}
+
+.top { text-align: center; width: 100%; max-width: 40rem; }
+
+.logo {
+  font-family: "Unbounded", sans-serif;
+  font-weight: 700;
+  font-size: clamp(2rem, 7vw, 2.8rem);
+  letter-spacing: .06em;
+}
+.logo span { color: var(--sakura); }
+
+.tagline { color: var(--muted); font-size: .9rem; margin-top: .3rem; }
+
+.modes {
+  display: inline-flex;
+  margin-top: 1rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: .25rem;
+  gap: .25rem;
+}
+.mode {
+  font: 600 .85rem "Manrope", sans-serif;
+  color: var(--muted);
+  background: none;
+  border: 0;
+  border-radius: 999px;
+  padding: .5rem 1.1rem;
+  cursor: pointer;
+}
+.mode.active { background: var(--sakura); color: #2a0f1c; }
+.mode:focus-visible, .btn:focus-visible, #guess:focus-visible {
+  outline: 2px solid var(--gold); outline-offset: 2px;
+}
+
+.game { width: 100%; max-width: 40rem; margin-top: 1.4rem; }
+
+.status {
+  text-align: center;
+  color: var(--muted);
+  font-size: .9rem;
+  min-height: 1.3rem;
+  margin-bottom: .8rem;
+}
+.status b { color: var(--gold); }
+
+/* подсказки */
+.hints { display: flex; flex-wrap: wrap; gap: .45rem; justify-content: center; margin-bottom: 1rem; }
+.chip {
+  font-size: .8rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: .3rem .8rem;
+  color: var(--muted);
+  background: var(--surface);
+}
+.chip.open { color: var(--text); border-color: var(--sakura-dim); }
+.chip.open b { color: var(--sakura); font-weight: 800; }
+
+/* комментарии — как посты форума */
+.comments { display: flex; flex-direction: column; gap: .8rem; }
+.comment {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--sakura);
+  border-radius: var(--radius);
+  padding: .9rem 1rem;
+  animation: rise .35s ease both;
+}
+@keyframes rise { from { opacity: 0; transform: translateY(10px); } }
+@media (prefers-reduced-motion: reduce) { .comment { animation: none; } }
+.comment .who {
+  display: flex; align-items: center; gap: .5rem;
+  color: var(--muted); font-size: .78rem; margin-bottom: .45rem;
+}
+.comment .who::before {
+  content: "";
+  width: 22px; height: 22px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--sakura-dim), var(--surface-2));
+  display: inline-block;
+}
+.comment .body { line-height: 1.55; font-size: .95rem; overflow-wrap: anywhere; }
+
+/* управление */
+.controls {
+  position: sticky;
+  bottom: 0;
+  margin-top: 1.2rem;
+  padding: .8rem 0 .5rem;
+  background: linear-gradient(transparent, var(--bg) 25%);
+}
+.attempts { display: flex; justify-content: center; gap: .55rem; margin-bottom: .9rem; }
+.petal {
+  width: 16px; height: 16px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 50% 0 50% 50%;
+  transform: rotate(45deg);
+  transition: background .25s, border-color .25s;
+}
+.petal.used { background: var(--bad); border-color: var(--bad); }
+.petal.win { background: var(--ok); border-color: var(--ok); }
+
+.guess-box { position: relative; }
+#guess {
+  width: 100%;
+  font: 600 1rem "Manrope", sans-serif;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: .9rem 1rem;
+}
+#guess::placeholder { color: var(--muted); }
+
+.suggest {
+  position: absolute;
+  z-index: 10;
+  left: 0; right: 0;
+  bottom: calc(100% + 6px);
+  list-style: none;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  max-height: 16rem;
+  overflow-y: auto;
+  box-shadow: 0 -8px 30px #0008;
+}
+.suggest li {
+  padding: .65rem .9rem;
+  cursor: pointer;
+  font-size: .92rem;
+  border-bottom: 1px solid var(--line);
+}
+.suggest li:last-child { border-bottom: 0; }
+.suggest li .en { color: var(--muted); font-size: .78rem; display: block; }
+.suggest li:hover, .suggest li.sel { background: var(--sakura); color: #2a0f1c; }
+.suggest li:hover .en, .suggest li.sel .en { color: #2a0f1cbb; }
+
+.buttons { display: flex; gap: .6rem; justify-content: center; margin-top: .9rem; flex-wrap: wrap; }
+.btn {
+  font: 700 .9rem "Manrope", sans-serif;
+  border-radius: 999px;
+  padding: .7rem 1.4rem;
+  cursor: pointer;
+  border: 1px solid var(--line);
+  text-decoration: none;
+  display: inline-block;
+}
+.btn.primary { background: var(--sakura); border-color: var(--sakura); color: #2a0f1c; }
+.btn.ghost { background: none; color: var(--muted); }
+.btn.ghost:hover { color: var(--text); border-color: var(--sakura-dim); }
+
+/* результат */
+.result { text-align: center; margin-top: 1.4rem; }
+.poster {
+  width: 150px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  box-shadow: 0 10px 40px #0007;
+}
+.result h2 { font-family: "Unbounded", sans-serif; font-size: 1.25rem; margin-top: .9rem; }
+.result-sub { color: var(--muted); font-size: .85rem; margin-top: .25rem; }
+.result-text { margin-top: .7rem; font-size: 1rem; }
+.result-text.win { color: var(--ok); }
+.result-text.lose { color: var(--bad); }
+
+.stats {
+  display: flex; justify-content: center; gap: 1.6rem;
+  margin-top: 1.3rem; color: var(--muted); font-size: .8rem;
+}
+.stats div b { display: block; color: var(--text); font-size: 1.3rem; font-weight: 800; }
+
+.foot { margin-top: auto; padding-top: 2.5rem; color: var(--muted); font-size: .78rem; text-align: center; }
+.foot a { color: var(--sakura); }
+
+@media (max-width: 480px) {
+  body { padding: .9rem .7rem 2rem; }
+  .stats { gap: 1rem; }
+}
+
+.history { display: flex; flex-wrap: wrap; gap: .4rem; justify-content: center; margin-bottom: .7rem; }
+.try { font-size: .8rem; padding: .25rem .7rem; border-radius: 999px; background: var(--surface); border: 1px solid var(--bad); color: var(--muted); text-decoration: line-through; }
+.try.hit { border-color: var(--ok); color: var(--ok); text-decoration: none; }
+
+.levels { display: flex; justify-content: center; gap: .4rem; margin-top: .6rem; }
+.level { font: 600 .8rem "Manrope", sans-serif; color: var(--muted); background: var(--surface);
+  border: 1px solid var(--line); border-radius: 999px; padding: .4rem .9rem; cursor: pointer; }
+.level.active { color: var(--gold); border-color: var(--gold); }

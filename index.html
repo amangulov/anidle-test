@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Анидл — угадай аниме по комментариям</title>
+<meta name="description" content="Ежедневная браузерная игра: угадывайте аниме по русским комментариям с Shikimori за 6 попыток. Ежедневная загадка и бесконечный режим.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Manrope:ital,wght@0,400;0,600;0,800;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌸</text></svg>">
+</head>
+<body>
+
+<header class="top">
+  <h1 class="logo">АНИ<span>ДЛ</span></h1>
+  <p class="tagline">угадай аниме по комментариям с Shikimori</p>
+  <nav class="modes" role="tablist">
+    <button id="tab-daily" class="mode active" role="tab" aria-selected="true">Загадка дня</button>
+    <button id="tab-endless" class="mode" role="tab" aria-selected="false">Бесконечный</button>
+  </nav>
+  <nav id="levels" class="levels" hidden>
+  <button class="level active" data-l="0">Лёгкий</button>
+  <button class="level" data-l="1">Средний</button>
+  <button class="level" data-l="2">Сложный</button>
+</nav>
+</header>
+
+<main class="game">
+  <div id="status" class="status" aria-live="polite"></div>
+
+  <section id="hints" class="hints" aria-label="Подсказки"></section>
+
+  <section id="comments" class="comments" aria-label="Комментарии"></section>
+
+  <section id="controls" class="controls">
+    <div class="attempts" id="attempts" aria-label="Попытки"></div>
+    <div id="history" class="history"></div>
+    <div class="guess-box">
+      <input id="guess" type="text" autocomplete="off" spellcheck="false"
+             placeholder="Название аниме…" aria-label="Введите название аниме">
+      <ul id="suggest" class="suggest" role="listbox" hidden></ul>
+    </div>
+    <div class="buttons">
+      <button id="skip" class="btn ghost">Пропустить →</button>
+    </div>
+  </section>
+
+  <section id="result" class="result" hidden>
+    <img id="result-poster" class="poster" alt="Постер аниме">
+    <h2 id="result-title"></h2>
+    <p id="result-sub" class="result-sub"></p>
+    <p id="result-text" class="result-text"></p>
+    <div class="buttons">
+      <button id="share" class="btn primary">Поделиться результатом</button>
+      <a id="result-link" class="btn ghost" target="_blank" rel="noopener">Открыть на Shikimori</a>
+      <button id="next" class="btn primary" hidden>Следующее аниме →</button>
+    </div>
+    <div id="stats" class="stats"></div>
+  </section>
+</main>
+
+<footer class="foot">
+  <p>Данные и комментарии — <a href="https://shikimori.one" target="_blank" rel="noopener">Shikimori</a>.
+  Новая загадка — каждый день в 00:00 МСК.</p>
+</footer>
+
+<script src="js/app.js"></script>
+</body>
+</html>
